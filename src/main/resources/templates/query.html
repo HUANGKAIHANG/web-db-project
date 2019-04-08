@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Query Page</title>
+</head>
+<style type="text/css">
+    div {
+        text-align: center;
+        margin: auto;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+</style>
+<body>
+<div>
+    <p>Query Page</p>
+</div>
+<div>
+    <form action="./query" method="post">
+        <label>category</label><input type="text" name="category"/>
+
+        <input type="submit" value="submit"/>
+    </form>
+</div>
+<hr/>
+<div>
+<p>Query Result</p>
+</div>
+<div>
+    <textarea rows="50" cols="100" th:text="${result}">
+
+    </textarea>
+</div>
+</body>
+</html>
