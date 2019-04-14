@@ -5,7 +5,7 @@
     <title>Query Page</title>
 </head>
 <style type="text/css">
-    div {
+    .title {
         text-align: center;
         margin: auto;
         top: 0;
@@ -13,26 +13,118 @@
         left: 0;
         right: 0;
     }
+
+    input, select {
+        margin: 10px;
+    }
+
+    #body {
+        margin: 0 auto;
+        padding: 0;
+        text-align: center;
+        clear: both;
+        background-color: darkgrey;
+    }
+
+    .resutlArea {
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+    }
+
+    #resultOne {
+        background-color: cyan;
+    }
+
+    #resultTwo {
+        background-color: hotpink;
+    }
+
+    #resultThree {
+        background-color: lightseagreen;
+    }
+
+    textarea {
+        resize: none;
+    }
+
+    .university {
+        font-size: large;
+        font-family: Arial;
+    }
 </style>
 <body>
-<div>
-    <p>Query Page</p>
+<div class="title">
+    <h2>Query Page</h2>
 </div>
-<div>
+<div class="title">
     <form action="./query" method="post">
-        <label>category</label><input type="text" name="category"/>
-
-        <input type="submit" value="submit"/>
+        <label>CourseId</label><input type="text" name="courseId" th:value="${courseId}"/>
+        <label>CourseTitle</label><input type="text" name="title" th:value="${title}"/>
+        <label>Instructor</label><input type="text" name="instructor" th:value="${instructor}"/><br/>
+        <label>Subject(NOT for University of Wisconsin–Madison)</label>
+        <select name="subject" th:selected="${subject}">
+            <option value=""></option>
+            <option th:selected="${subject}=='ANTH'" value="ANTH">ANTH</option>
+            <option th:selected="${subject}=='BIOL'" value="BIOL">BIOL</option>
+            <option th:selected="${subject}=='CHEM'" value="CHEM">CHEM</option>
+            <option th:selected="${subject}=='CLAS'" value="CLAS">CLAS</option>
+            <option th:selected="${subject}=='DANC'" value="DANC">DANC</option>
+            <option th:selected="${subject}=='ECON'" value="ECON">ECON</option>
+            <option th:selected="${subject}=='ENG'" value="ENG">ENG</option>
+            <option th:selected="${subject}=='FREN'" value="FREN">FREN</option>
+            <option th:selected="${subject}=='GER'" value="GER">GER</option>
+            <option th:selected="${subject}=='HIST'" value="HIST">HIST</option>
+            <option th:selected="${subject}=='HUM'" value="HUM">HUM</option>
+            <option th:selected="${subject}=='MATH'" value="MATH">MATH</option>
+            <option th:selected="${subject}=='MUS'" value="MUS">MUS</option>
+            <option th:selected="${subject}=='PHIL'" value="PHIL">PHIL</option>
+            <option th:selected="${subject}=='PHYS'" value="PHYS">PHYS</option>
+            <option th:selected="${subject}=='POL'" value="POL">POL</option>
+            <option th:selected="${subject}=='PSY'" value="PSY">PSY</option>
+            <option th:selected="${subject}=='SOC'" value="SOC">SOC</option>
+            <option th:selected="${subject}=='SPAN'" value="SPAN">SPAN</option>
+            <option th:selected="${subject}=='THEA'" value="THEA">THEA</option>
+        </select>
+        <label>Days</label>
+        <select name="days">
+            <option value=""></option>
+            <option th:selected="${days}=='M'" value="M">Monday</option>
+            <option th:selected="${days}=='T'" value="T">Tuesday</option>
+            <option th:selected="${days}=='W'" value="W">Wednesday</option>
+            <option th:selected="${days}=='R'" value="R">Thursday</option>
+            <option th:selected="${days}=='F'" value="F">Friday</option>
+            <option th:selected="${days}=='S'" value="S">Weekend</option>
+        </select><br/>
+        <input type="submit" value="search"/>
     </form>
 </div>
 <hr/>
+
 <div>
-<p>Query Result</p>
+    <h2 class="title">Query Result</h2><br/>
 </div>
-<div>
-    <textarea rows="50" cols="100" th:text="${result}">
+<div id="body">
+    <div class="resutlArea" id="resultOne">
+        <label class="university">Washington State University</label><br/>
+        <textarea rows="25" cols="50" th:text="${resultWSU}">
 
     </textarea>
+    </div>
+
+    <div class="resutlArea" id="resultTwo">
+        <label class="university">University of Wisconsin–Madison</label><br/>
+        <textarea rows="25" cols="50" th:text="${resultUWM}">
+
+    </textarea>
+    </div>
+
+    <div class="resutlArea" id="resultThree">
+        <label class="university">Reed College</label><br/>
+        <textarea rows="25" cols="50" th:text="${resultReed}">
+
+    </textarea>
+    </div>
 </div>
 </body>
 </html>
