@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class QueryController {
 
-	@Autowired
-	private QueryService queryService;
+	/*@Autowired
+	private QueryService queryService;*/
 
 	@Autowired
 	private WSUService wsuService;
@@ -32,6 +32,7 @@ public class QueryController {
 						@RequestParam(value = "subject") String subject,
 						@RequestParam(value = "days") String days,
 						Model model) {
+
 		System.out.println("====================================");
 		System.out.println("courseId=" + courseId);
 		System.out.println("title=" + title);
@@ -45,14 +46,13 @@ public class QueryController {
 				"".equals(subject) &&
 				"".equals(days)) {
 			System.out.println("NO Conditions!");
-			model.addAttribute("resultWSU","please use at least one condition to search.");
-			model.addAttribute("resultUWM","please use at least one condition to search.");
-			model.addAttribute("resultReed","please use at least one condition to search.");
-		}else{
-			String resultWSU = wsuService.query(courseId,title,instructor,subject,days);
-//			String resultWSU = queryService.query("1");
-			String resultUWM = "";
-			String resultReed = "";
+			model.addAttribute("resultWSU", "please use at least one condition to search.");
+			model.addAttribute("resultUWM", "please use at least one condition to search.");
+			model.addAttribute("resultReed", "please use at least one condition to search.");
+		} else {
+			String resultWSU = wsuService.query(courseId, title.toLowerCase(), instructor.toLowerCase(), subject, days);
+			String resultUWM = uwmService.query(courseId, title.toLowerCase(), instructor.toLowerCase(), days);
+			String resultReed = reedService.query(courseId, title.toLowerCase(), instructor.toLowerCase(), subject, days);
 			model.addAttribute("resultWSU", resultWSU);
 			model.addAttribute("resultUWM", resultUWM);
 			model.addAttribute("resultReed", resultReed);
@@ -62,6 +62,7 @@ public class QueryController {
 			model.addAttribute("subject", subject);
 			model.addAttribute("days", days);
 		}
+
 		return "query";
 	}
 }

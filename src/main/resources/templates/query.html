@@ -15,7 +15,7 @@
     }
 
     input, select {
-        margin: 10px;
+        margin: 7px;
     }
 
     #body {
@@ -50,6 +50,13 @@
 
     .university {
         font-size: large;
+        font-family: Arial;
+    }
+
+    #btn{
+        width: 120px;
+        height: 30px;
+        font-size: 20px;
         font-family: Arial;
     }
 </style>
@@ -96,7 +103,7 @@
             <option th:selected="${days}=='F'" value="F">Friday</option>
             <option th:selected="${days}=='S'" value="S">Weekend</option>
         </select><br/>
-        <input type="submit" value="search"/>
+        <input id="btn" type="submit" value="search"/>
     </form>
 </div>
 <hr/>
