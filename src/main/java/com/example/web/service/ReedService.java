@@ -2,6 +2,7 @@ package com.example.web.service;
 
 import com.saxonica.xqj.SaxonXQDataSource;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.NodeList;
 
 import javax.xml.xquery.XQConnection;
 import javax.xml.xquery.XQDataSource;
@@ -11,7 +12,7 @@ import javax.xml.xquery.XQResultSequence;
 @Service
 public class ReedService {
 
-	public String query(String courseId, String title, String instructor, String subject, String days) {
+	public String query(String courseId, String title, String instructor, String subject, String days, String original) {
 		int validConditionNumbers = 0;
 		StringBuffer query = new StringBuffer("for $course in doc(\"classpath:reed.xml\")/root/* " +
 				"where ");
@@ -62,9 +63,36 @@ public class ReedService {
 
 			XQPreparedExpression expression = connection.prepareExpression(query.toString());
 			XQResultSequence resultSequence = expression.executeQuery();
-			while (resultSequence.next()) {
-				String temp = resultSequence.getItemAsString(null);
-				result.append(temp);
+			if (original.equals("1")) {
+				while (resultSequence.next()) {
+					String temp = resultSequence.getItemAsString(null);
+					result.append(temp);
+				}
+			} else if (original.equals("0")) {
+				while (resultSequence.next()) {
+					NodeList nodeList = resultSequence.getNode().getChildNodes();
+					String tempCourseId = nodeList.item(0).getTextContent();
+					String tempSubject = nodeList.item(1).getTextContent();
+					String tempTitle = nodeList.item(4).getTextContent();
+					String tempCredit = nodeList.item(5).getTextContent();
+					String tempDays = nodeList.item(7).getTextContent();
+					String tempInstructor = nodeList.item(6).getTextContent();
+					NodeList timesList = nodeList.item(8).getChildNodes();
+					String tempStart = timesList.item(0).getTextContent();
+					String tempEnd = timesList.item(1).getTextContent();
+					NodeList placeList = nodeList.item(9).getChildNodes();
+					String tempBuilding = placeList.item(0).getTextContent();
+					String tempRoom = placeList.item(1).getTextContent();
+
+					result.append("***************Course ID: " + tempCourseId + "***************\n");
+					result.append("Subject: " + tempSubject + "\n");
+					result.append("Title: " + tempTitle + "\n");
+					result.append("Credit: " + tempCredit + "\n");
+					result.append("Days: " + tempDays + "\n");
+					result.append("Instructor: " + tempInstructor + "\n");
+					result.append("Time: " + tempStart + "--" + tempEnd + "\n");
+					result.append("Place: " + tempBuilding + "--" + tempRoom + "\n");
+				}
 			}
 
 			XQPreparedExpression countExpression = connection.prepareExpression(count.toString());
@@ -83,12 +111,12 @@ public class ReedService {
 	}
 
 	private StringBuffer addCondition(int number, String condition, String value, StringBuffer query) {
-		if (condition.equals("title")||condition.equals("instructor")){
+		if (condition.equals("title") || condition.equals("instructor")) {
 			if (number == 0)
 				query.append("contains(lower-case($course/" + condition + ") ,'" + value + "') ");
 			else
 				query.append("and contains(lower-case($course/" + condition + ") ,'" + value + "') ");
-		}else{
+		} else {
 			if (number == 0)
 				query.append("contains($course/" + condition + " ,'" + value + "') ");
 			else
@@ -98,12 +126,12 @@ public class ReedService {
 	}
 
 	private StringBuffer addCountCondition(int number, String condition, String value, StringBuffer count) {
-		if (condition.equals("title")||condition.equals("instructor")){
+		if (condition.equals("title") || condition.equals("instructor")) {
 			if (number == 0)
 				count.append("contains(lower-case(./" + condition + "),'" + value + "') ");
 			else
 				count.append("and contains(lower-case(./" + condition + "),'" + value + "') ");
-		}else{
+		} else {
 			if (number == 0)
 				count.append("contains(./" + condition + ",'" + value + "') ");
 			else

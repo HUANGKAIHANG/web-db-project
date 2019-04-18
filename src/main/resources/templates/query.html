@@ -59,6 +59,9 @@
         font-size: 20px;
         font-family: Arial;
     }
+    #note{
+        color: red;
+    }
 </style>
 <body>
 <div class="title">
@@ -69,7 +72,7 @@
         <label>CourseId</label><input type="text" name="courseId" th:value="${courseId}"/>
         <label>CourseTitle</label><input type="text" name="title" th:value="${title}"/>
         <label>Instructor</label><input type="text" name="instructor" th:value="${instructor}"/><br/>
-        <label>Subject(NOT for University of Wisconsin–Madison)</label>
+        <label>Subject<label id="note">(NOT for University of Wisconsin–Madison)</label></label>
         <select name="subject" th:selected="${subject}">
             <option value=""></option>
             <option th:selected="${subject}=='ANTH'" value="ANTH">ANTH</option>
@@ -103,6 +106,12 @@
             <option th:selected="${days}=='F'" value="F">Friday</option>
             <option th:selected="${days}=='S'" value="S">Weekend</option>
         </select><br/>
+        <label>Display in original XML format: </label>
+        <label>YES</label>
+        <input type="radio" name="original" value="1" checked="checked"/>
+        <label>NO</label>
+        <input type="radio" name="original" value="0" />
+
         <input id="btn" type="submit" value="search"/>
     </form>
 </div>
