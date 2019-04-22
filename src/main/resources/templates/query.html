@@ -113,6 +113,13 @@
         <input type="radio" name="original" value="0" />
 
         <input id="btn" type="submit" value="search"/>
+
+        <label>Sort By</label>
+        <select name="sort">
+            <option th:selected="${sort}=='courseId'" value="courseId">CourseId</option>
+            <option th:selected="${sort}=='title'" value="title">CourseTitle</option>
+            <option th:selected="${sort}=='credit'" value="credit">Credit</option>
+        </select>
     </form>
 </div>
 <hr/>

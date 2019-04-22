@@ -9,7 +9,8 @@ import javax.xml.xquery.*;
 @Service
 public class WSUService {
 
-	public String query(String courseId, String title, String instructor, String subject, String days, String original) {
+	public String query(String courseId, String title, String instructor, String subject, String days,
+						String original, String sort) {
 		int validConditionNumbers = 0;
 		StringBuffer query = new StringBuffer("for $course in doc(\"classpath:wsu.xml\")/root/* " +
 				"where ");
@@ -46,7 +47,8 @@ public class WSUService {
 			validConditionNumbers++;
 		}
 
-		query.append("order by $course/sln return $course ");
+		query = addTail(query, sort);
+//		query.append("order by $course/sln return $course ");
 		count.append("]) return $count");
 
 		System.out.println("XQuery:");
@@ -107,6 +109,16 @@ public class WSUService {
 			e.printStackTrace();
 		}
 		return countResult.toString() + result.toString();
+	}
+
+	private StringBuffer addTail(StringBuffer query, String sort) {
+		if (sort.equals("courseId"))
+			query.append("order by $course/sln return $course ");
+		else if (sort.equals("title"))
+			query.append("order by $course/title return $course ");
+		else if (sort.equals("credit"))
+			query.append("order by $course/credit return $course ");
+		return query;
 	}
 
 	private StringBuffer addCondition(int number, String condition, String value, StringBuffer query) {

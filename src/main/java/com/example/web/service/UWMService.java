@@ -15,7 +15,8 @@ import java.util.List;
 @Service
 public class UWMService {
 
-	public String query(String courseId, String title, String instructor, String days, String original) {
+	public String query(String courseId, String title, String instructor, String days,
+						String original, String sort) {
 		int validConditionNumbers = 0;
 		StringBuffer query = new StringBuffer("for $course in doc(\"classpath:uwm.xml\")/root/* " +
 				"where ");
@@ -43,7 +44,8 @@ public class UWMService {
 			validConditionNumbers++;
 		}
 
-		query.append("order by $course/course return $course ");
+		query = addTail(query, sort);
+//		query.append("order by $course/course return $course ");
 		count.append("]) return $count");
 
 		System.out.println("XQuery:");
@@ -124,6 +126,16 @@ public class UWMService {
 		return countResult.toString() + result.toString();
 	}
 
+	private StringBuffer addTail(StringBuffer query, String sort) {
+		if (sort.equals("courseId"))
+			query.append("order by $course/course return $course ");
+		else if (sort.equals("title"))
+			query.append("order by $course/title return $course ");
+		else if (sort.equals("credit"))
+			query.append("order by $course/credits return $course ");
+		return query;
+	}
+
 	private StringBuffer addCondition(int number, String condition, String value, StringBuffer query) {
 		if (condition.equals("days")) {
 			if (number == 0)
@@ -152,14 +164,14 @@ public class UWMService {
 	private StringBuffer addCountCondition(int number, String condition, String value, StringBuffer count) {
 		if (condition.equals("days")) {
 			if (number == 0)
-				count.append(".//" + condition + "[contains(.,'" + value + "')]");
+				count.append(".//" + condition + "[contains(.,'" + value + "')] ");
 			else
-				count.append("and .//" + condition + "[contains(.,'" + value + "')]");
+				count.append("and .//" + condition + "[contains(.,'" + value + "')] ");
 		} else if (condition.equals("instructor")) {
 			if (number == 0)
-				count.append(".//" + condition + "[contains(lower-case(.),'" + value + "')]");
+				count.append(".//" + condition + "[contains(lower-case(.),'" + value + "')] ");
 			else
-				count.append("and .//" + condition + "[contains(lower-case(.),'" + value + "')]");
+				count.append("and .//" + condition + "[contains(lower-case(.),'" + value + "')] ");
 		} else if (condition.equals("title")) {
 			if (number == 0)
 				count.append("contains(lower-case(./" + condition + "),'" + value + "') ");

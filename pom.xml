@@ -29,6 +29,30 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.hkh</groupId>
+            <artifactId>saxon9he</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.hkh</groupId>
+            <artifactId>saxon9-test</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.hkh</groupId>
+            <artifactId>saxon9-unpack</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.hkh</groupId>
+            <artifactId>saxon9-xqj</artifactId>
+            <version>1.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

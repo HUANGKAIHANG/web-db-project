@@ -32,6 +32,7 @@ public class QueryController {
 						@RequestParam(value = "subject") String subject,
 						@RequestParam(value = "days") String days,
 						@RequestParam(value = "original") String original,
+						@RequestParam(value = "sort") String sort,
 						Model model) {
 
 		System.out.println("====================================");
@@ -41,6 +42,7 @@ public class QueryController {
 		System.out.println("subject=" + subject);
 		System.out.println("days=" + days);
 		System.out.println("original=" + original);
+		System.out.println("sort=" + sort);
 
 		if ("".equals(courseId.trim()) &&
 				"".equals(title.trim()) &&
@@ -52,9 +54,9 @@ public class QueryController {
 			model.addAttribute("resultUWM", "please use at least one condition to search.");
 			model.addAttribute("resultReed", "please use at least one condition to search.");
 		} else {
-			String resultWSU = wsuService.query(courseId, title.toLowerCase(), instructor.toLowerCase(), subject, days, original);
-			String resultUWM = uwmService.query(courseId, title.toLowerCase(), instructor.toLowerCase(), days, original);
-			String resultReed = reedService.query(courseId, title.toLowerCase(), instructor.toLowerCase(), subject, days, original);
+			String resultWSU = wsuService.query(courseId, title.toLowerCase(), instructor.toLowerCase(), subject, days, original, sort);
+			String resultUWM = uwmService.query(courseId, title.toLowerCase(), instructor.toLowerCase(), days, original, sort);
+			String resultReed = reedService.query(courseId, title.toLowerCase(), instructor.toLowerCase(), subject, days, original, sort);
 			model.addAttribute("resultWSU", resultWSU);
 			model.addAttribute("resultUWM", resultUWM);
 			model.addAttribute("resultReed", resultReed);
@@ -63,6 +65,7 @@ public class QueryController {
 			model.addAttribute("instructor", instructor);
 			model.addAttribute("subject", subject);
 			model.addAttribute("days", days);
+			model.addAttribute("sort", sort);
 		}
 
 		return "query";
