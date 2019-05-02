@@ -55,10 +55,17 @@ public class QueryController {
 			model.addAttribute("resultReed", "please use at least one condition to search.");
 		} else {
 			String resultWSU = wsuService.query(courseId, title.toLowerCase(), instructor.toLowerCase(), subject, days, original, sort);
-			String resultUWM = uwmService.query(courseId, title.toLowerCase(), instructor.toLowerCase(), days, original, sort);
+			if ("".equals(courseId.trim()) &&
+					"".equals(title.trim()) &&
+					"".equals(instructor.trim()) &&
+					"".equals(days)) {
+				model.addAttribute("resultUWM", "please use at least one condition to search.");
+			} else {
+				String resultUWM = uwmService.query(courseId, title.toLowerCase(), instructor.toLowerCase(), days, original, sort);
+				model.addAttribute("resultUWM", resultUWM);
+			}
 			String resultReed = reedService.query(courseId, title.toLowerCase(), instructor.toLowerCase(), subject, days, original, sort);
 			model.addAttribute("resultWSU", resultWSU);
-			model.addAttribute("resultUWM", resultUWM);
 			model.addAttribute("resultReed", resultReed);
 			model.addAttribute("courseId", courseId);
 			model.addAttribute("title", title);
